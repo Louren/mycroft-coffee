@@ -1,2 +1,2 @@
-An error occurred: {{count}}
-Oops, something went wrong: {{count}}
+An error occurred: {{error}}
+Oops, something went wrong: {{error}}

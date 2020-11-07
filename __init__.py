@@ -33,9 +33,8 @@ class CoffeeSkill(MycroftSkill):
     @intent_handler(IntentBuilder("").require("Espresso"))
     def handle_espresso_intent(self, message):
         # In this case, respond by simply speaking a canned response.
-        # Mycroft will randomly speak one of the lines from the file
-        #    dialogs/en-us/hello.world.dialog
-        self.speak_dialog("barista")
+        # Mycroft will randomly speak one of the lines from the dialog file
+        self.speak_dialog("barista.espresso")
         try:
             # TODO: Fix turnOnAndMakeEspresso routine on Arduino
             r1 = requests.get(f"http://{self.arduino_ip}/routines/turnOn",timeout=self.timeout)
@@ -47,22 +46,24 @@ class CoffeeSkill(MycroftSkill):
             self.speak_dialog("some.error", data={"error": "Arduino offline"})
         except:
             self.speak_dialog("some.error", data={"some.error": "Unknown"})
-    #@intent_handler(IntentBuilder("").require("Count").require("Dir"))
-    #def handle_count_intent(self, message):
-    #    if message.data["Dir"] == "up":
-    #        self.count += 1
-    #    else:  # assume "down"
-    #        self.count -= 1
-    #    self.speak_dialog("count.is.now", data={"count": self.count})
 
-    # The "stop" method defines what Mycroft does when told to stop during
-    # the skill's execution. In this case, since the skill's functionality
-    # is extremely simple, there is no need to override it.  If you DO
-    # need to implement stop, you should return True to indicate you handled
-    # it.
-    #
-    # def stop(self):
-    #    return False
+
+    @intent_handler(IntentBuilder("").require("DoubleEspresso"))
+    def handle_espresso_intent(self, message):
+        # In this case, respond by simply speaking a canned response.
+        # Mycroft will randomly speak one of the lines from the dialog file
+        self.speak_dialog("barista.double.espresso")
+        try:
+            # TODO: Fix turnOnAndMakeEspresso routine on Arduino
+            r1 = requests.get(f"http://{self.arduino_ip}/routines/turnOn",timeout=self.timeout)
+            r1.raise_for_status()
+
+            r2 = requests.get(f"http://{self.arduino_ip}/routines/doubleEspresso",timeout=self.timeout)
+            r2.raise_for_status()
+        except requests.exceptions.Timeout:
+            self.speak_dialog("some.error", data={"error": "Arduino offline"})
+        except:
+            self.speak_dialog("some.error", data={"some.error": "Unknown"})
 
 # The "create_skill()" method is used to create an instance of the skill.
 # Note that it's outside the class itself.
