@@ -37,11 +37,8 @@ class CoffeeSkill(MycroftSkill):
         self.speak_dialog("barista.espresso")
         try:
             # TODO: Fix turnOnAndMakeEspresso routine on Arduino
-            r1 = requests.get(f"http://{self.arduino_ip}/routines/turnOn",timeout=self.timeout)
-            r1.raise_for_status()
-
-            r2 = requests.get(f"http://{self.arduino_ip}/button/espresso",timeout=self.timeout)
-            r2.raise_for_status()
+            r = requests.get(f"http://{self.arduino_ip}/routines/espresso",timeout=self.timeout)
+            r.raise_for_status()
         except requests.exceptions.Timeout:
             self.speak_dialog("some.error", data={"error": "Arduino offline"})
         except:
@@ -55,11 +52,8 @@ class CoffeeSkill(MycroftSkill):
         self.speak_dialog("barista.double.espresso")
         try:
             # TODO: Fix turnOnAndMakeEspresso routine on Arduino
-            r1 = requests.get(f"http://{self.arduino_ip}/routines/turnOn",timeout=self.timeout)
-            r1.raise_for_status()
-
-            r2 = requests.get(f"http://{self.arduino_ip}/routines/doubleEspresso",timeout=self.timeout)
-            r2.raise_for_status()
+            r = requests.get(f"http://{self.arduino_ip}/routines/doubleEspresso",timeout=self.timeout)
+            r.raise_for_status()
         except requests.exceptions.Timeout:
             self.speak_dialog("some.error", data={"error": "Arduino offline"})
         except:
