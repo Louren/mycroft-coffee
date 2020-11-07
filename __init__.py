@@ -2,6 +2,8 @@ from adapt.intent import IntentBuilder
 from mycroft.skills.core import MycroftSkill, intent_handler
 from mycroft.util.log import LOG
 
+import requests
+
 # Each skill is contained within its own class, which inherits base methods
 # from the MycroftSkill class.  You extend this class as shown below.
 
@@ -11,8 +13,11 @@ class CoffeeSkill(MycroftSkill):
     def __init__(self):
         super(CoffeeSkill, self).__init__(name="CoffeeSkill")
         
+        self.log.info("Barista initalized.")
         # Initialize working variables used within the skill.
-        # self.count = 0
+        self.arduino_ip = "192.168.2.251"
+        # Requests timeout in seconds
+        self.timeout = 3
 
     # The "handle_xxxx_intent" function is triggered by Mycroft when the
     # skill's intent is matched.  The intent is defined by the IntentBuilder()
@@ -31,7 +36,17 @@ class CoffeeSkill(MycroftSkill):
         # Mycroft will randomly speak one of the lines from the file
         #    dialogs/en-us/hello.world.dialog
         self.speak_dialog("barista")
+        try:
+            # TODO: Fix turnOnAndMakeEspresso routine on Arduino
+            r1 = requests.get(f"http://{self.arduino_ip}/routines/turnOn",timeout=self.timeout)
+            r1.raise_for_status()
 
+            r2 = requests.get(f"http://{self.arduino_ip}/button/espresso",timeout=self.timeout)
+            r2.raise_for_status()
+        except requests.exceptions.Timeout:
+            self.speak_dialog("some.error", data={"error": "Arduino offline"})
+        except:
+            self.speak_dialog("some.error", data={"some.error": "Unknown"})
     #@intent_handler(IntentBuilder("").require("Count").require("Dir"))
     #def handle_count_intent(self, message):
     #    if message.data["Dir"] == "up":
