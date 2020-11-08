@@ -46,7 +46,7 @@ class CoffeeSkill(MycroftSkill):
 
 
     @intent_handler(IntentBuilder("").require("DoubleEspresso"))
-    def handle_espresso_intent(self, message):
+    def handle_double_espresso_intent(self, message):
         # In this case, respond by simply speaking a canned response.
         # Mycroft will randomly speak one of the lines from the dialog file
         self.speak_dialog("barista.double.espresso")
