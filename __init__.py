@@ -57,7 +57,7 @@ class CoffeeSkill(MycroftSkill):
         except requests.exceptions.Timeout:
             self.speak_dialog("some.error", data={"error": "Arduino offline"})
         except:
-            self.speak_dialog("some.error", data={"some.error": "Unknown"})
+            self.speak_dialog("some.error", data={"error": "Unknown"})
 
 # The "create_skill()" method is used to create an instance of the skill.
 # Note that it's outside the class itself.
